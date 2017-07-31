@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="AcervoAtigos.CustomControls.CustomTitleBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AcervoAtigos.CustomControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <materialDesign:ColorZone Height="50"
+                              DockPanel.Dock="Top"
+                              Mode="PrimaryMid"
+                              MouseDown="UIElement_OnMouseDown"
+                              MouseDoubleClick="Control_OnMouseDoubleClick"
+                              Padding="8"
+                              materialDesign:ShadowAssist.ShadowDepth="Depth2">
+
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15" />
+
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Text="{Binding Path=WindowCaption,
+                                      ElementName=UserControl,
+                                      Mode=Default}" />
+
+
+
+            <Button x:Name="BtnMinimizar"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Height="15"
+                    VerticalAlignment="Top"
+                    Click="BtnMinimizar_OnClick"
+                    Focusable="False"
+                    Style="{StaticResource BotaoMinimizar}"
+                    ToolTip="Minimizar"
+                    Visibility="{Binding Path=MinimizeButtonEnabled,
+                                         UpdateSourceTrigger=PropertyChanged, 
+                                         Converter={StaticResource BooleanToVisibilityConverter},
+                                         ElementName=UserControl,
+                                         Mode=TwoWay}" />
+            <Button x:Name="BtnMaximizar"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Height="15"
+                    VerticalAlignment="Top"
+                    Click="BtnMaximizar_OnClick"
+                    Focusable="False"
+                    Style="{StaticResource BotaoMaximizar}"
+                    ToolTip="Maximizar"
+                    Visibility="{Binding Path=MaximizeButtonEnabled,
+                                         UpdateSourceTrigger=PropertyChanged, 
+                                         Converter={StaticResource BooleanToVisibilityConverter},
+                                         ElementName=UserControl,
+                                         Mode=TwoWay}" />
+            <Button x:Name="BtnFechar"
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Height="15"
+                    VerticalAlignment="Top"
+                    Click="BtnFechar_OnClick"
+                    Style="{StaticResource BotaoFechar}"
+                    ToolTip="Fechar" />
+        </Grid>
+    </materialDesign:ColorZone>
+</UserControl>

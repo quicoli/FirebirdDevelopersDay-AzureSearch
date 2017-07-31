@@ -1,0 +1,219 @@
+﻿<Window x:Class="AcervoAtigos.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcervoAtigos"
+        mc:Ignorable="d"
+        
+        x:Name="MainWindowView"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:customControls="clr-namespace:AcervoAtigos.CustomControls"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:converter="clr-namespace:AcervoAtigos.Converter"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Acervo de artigos" Height="600" Width="800">
+    <Window.Resources>
+        <converter:HtmlToFlowDocConverter x:Key="HtmlToFlowDocConverter"/>
+    </Window.Resources>
+    
+    <DockPanel LastChildFill="True" Margin="10">
+        <dragablz:TabablzControl DockPanel.Dock="Top">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController/>
+            </dragablz:TabablzControl.InterTabController>
+
+            <TabItem Header="Indexação">
+                <Grid>
+                    <Button Content="Realizar o Upload dos documentos"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Command="{Binding CmdUploadDocumentos}"></Button>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Consulta normal">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <GroupBox Header="Pesquisa de artigos">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Edição" Width="50"/>
+                                        <TextBox Margin="5,0,0,0" Foreground="White" Width="100" Text="{Binding Edicao, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Título" Width="50"/>
+                                        <TextBox Margin="5,0,0,0" Width="570" Foreground="White" Text="{Binding Titulo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Autor" Width="50"/>
+                                        <TextBox Margin="5,0,0,0" Width="570" Foreground="White" Text="{Binding Autor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Content="Pesquisar" Command="{Binding CmdLocalizar}"  VerticalAlignment="Center" Width="100" Margin="20,0,0,0"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                    <Grid>
+                        <StackPanel Margin="0,15,0,0" Orientation="Vertical">
+                            <DataGrid 
+                                VerticalAlignment="Top"
+                                ItemsSource="{Binding Artigos, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                SelectedItem="{Binding ArtigoSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                                materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                                Height="246"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Edição" IsReadOnly="True" SortMemberPath="Cliente" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Edicao}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Título" IsReadOnly="True" SortMemberPath="Titulo" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Titulo}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Arquivo" IsReadOnly="True" SortMemberPath="Arquivo" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Arquivo}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <DataGrid 
+                                VerticalAlignment="Top"
+                                ItemsSource="{Binding Autores, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                                materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                                Height="150"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Autores" IsReadOnly="True" SortMemberPath="Nome" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Consulta textual">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <GroupBox Header="Pesquisa de artigos pelo conteúdo">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                <Label Content="Texto" Width="50"/>
+                                <TextBox Margin="5,0,0,0" Foreground="White" Width="500" Text="{Binding Texto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Content="Pesquisar" Command="{Binding CmdLocalizarAzure}"  VerticalAlignment="Center" Width="100" Margin="20,0,0,0"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                    <Grid>
+                        <StackPanel Orientation="Vertical" Margin="0,15,0,0">
+                            <DataGrid 
+                            VerticalAlignment="Top"
+                            ItemsSource="{Binding ArtigosAzure, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedItem="{Binding ArtigoAzureSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                            materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                            Height="146"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Edição" IsReadOnly="True" SortMemberPath="Cliente" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Edicao}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Título" IsReadOnly="True" SortMemberPath="Titulo" CanUserSort="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Titulo}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Orientation="Horizontal">
+                                <DataGrid 
+                                    VerticalAlignment="Top"
+                                    ItemsSource="{Binding Autores, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                                    materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                                    Height="200"
+                                    Width="250"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Autores" IsReadOnly="True" SortMemberPath="Nome" CanUserSort="False">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <DataGrid 
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Top"
+                                    ItemsSource="{Binding TextosHighlight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                                    materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+                                    Height="250"
+                                    Width="500"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Destaques" IsReadOnly="True" SortMemberPath="Nome" CanUserSort="False">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <FlowDocumentScrollViewer
+                                                        Document="{Binding Texto, Converter={StaticResource HtmlToFlowDocConverter}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </StackPanel>
+
+
+                    </Grid>
+                </DockPanel>   
+            </TabItem>
+        </dragablz:TabablzControl>
+    </DockPanel>
+</Window>
